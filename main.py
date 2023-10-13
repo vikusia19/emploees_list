@@ -19,22 +19,22 @@ class Main(tk.Frame):
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
 # Создание кнопок на главном окне
-# Кнопка, отвечающая за добавление контакта
+# Кнопка, отвечающая за добавление сотрудника
         self.add_img = tk.PhotoImage(file='./img/add.png')
         btn_open = tk.Button(toolbar, bg='#AED6F1', bd=0, image=self.add_img, command=self.open)
         btn_open.pack(side=tk.LEFT)
 
-# Кнопка, отвечающая за редактирование контакта
+# Кнопка, отвечающая за редактирование сотрудника
         self.update_img = tk.PhotoImage(file='./img/update.png')
         button_edit = tk.Button(toolbar, bg='#AED6F1', bd=0, image=self.update_img, command=self.open_update)
         button_edit.pack(side=tk.LEFT)
 
-# Кнопка, отвечающая за удаление контакта
+# Кнопка, отвечающая за удаление сотрудника
         self.delete_img = tk.PhotoImage(file='./img/delete.png')
         button_delete = tk.Button(toolbar, bg='#AED6F1', bd=0, image=self.delete_img, command=self.delete_records)
         button_delete.pack(side=tk.LEFT)
 
-# Кнопка, отвечающая за поиск контакта
+# Кнопка, отвечающая за поиск сотрудника
         self.search_img = tk.PhotoImage(file='./img/search.png')
         button_search = tk.Button(toolbar, bg='#AED6F1', bd=0, image=self.search_img, command=self.open_search)
         button_search.pack(side=tk.LEFT)
@@ -71,24 +71,24 @@ class Main(tk.Frame):
         [self.tree.delete(i) for i in self.tree.get_children()]
         [self.tree.insert('', 'end', values=row) for row in self.db.cursor.fetchall()]
 
-# Метод для открытия дочернего окна (редактирование контакта)
+# Метод для открытия дочернего окна (редактирование сотрудника)
     def open_update(self):
        Update()
 
-# Метод для редактирования контакта
+# Метод для редактирования сотрудника
     def update_records(self, name, phone, email, salary):
         self.db.cursor.execute('UPDATE Emploees SET name=?, phone=?, email=?, salary=? WHERE id=?', (name, phone, email, salary, self.tree.set(self.tree.selection() [0], '#1')))
         self.db.conn.commit()
         self.view_records()
 
-# Метод для удаления контакта
+# Метод для удаления сотрудника
     def delete_records(self):
         for selection_items in self.tree.selection():
             self.db.cursor.execute('DELETE from Emploees WHERE id=?', (self.tree.set(selection_items, '#1')))
         self.db.conn.commit()
         self.view_records()
 
-# Метод для открытия дочернего окна (поиск контакта)
+# Метод для открытия дочернего окна (поиск сотрудника)
     def open_search(self):
         Search()
 
@@ -152,7 +152,7 @@ class Child(tk.Toplevel):
                                               self.entry_salary.get(),
                                               ))
 
-# Написание класса для поиска контакта
+# Написание класса для поиска сотрудника
 # Инициализация атрибутов класса
 class Search(tk.Toplevel):
     def __init__(self):
@@ -163,7 +163,7 @@ class Search(tk.Toplevel):
 # Реализация поиска сотрудника
 # Настройки окна
     def init_search(self):
-        self.title('Поиск контакта')
+        self.title('Поиск сотрудника')
         self.geometry('300x100')
         self.resizable(False, False)
     
@@ -219,7 +219,7 @@ class Update(Child):
 
 # Реализация редактирования сотрудника
     def init_edit(self):
-        self.title('Редактирование контакта')
+        self.title('Редактирование сотрудника')
         button_edit = ttk.Button(self, text='Редактировать')
         button_edit.place(x=205, y=170)
         button_edit.bind('<Button-1>', lambda event:
@@ -246,7 +246,7 @@ if __name__ == '__main__':
     db = Db()
     app = Main(root)
     app.pack()
-    root.title('Телефонная книга')
+    root.title('Список сотрудников компании')
     root.geometry('665x450')
     root.resizable(False, False)
     root.mainloop()
